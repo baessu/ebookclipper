@@ -1,7 +1,47 @@
 const extractBtn = document.getElementById('extractBtn');
 const statusEl = document.getElementById('status');
 const previewEl = document.getElementById('preview');
+const pageBadge = document.getElementById('pageBadge');
+const pageBadgeText = document.getElementById('pageBadgeText');
+const guideToggle = document.getElementById('guideToggle');
+const guideSteps = document.getElementById('guideSteps');
 
+// 가이드 토글
+guideToggle.addEventListener('click', () => {
+  const isOpen = guideSteps.classList.toggle('show');
+  guideToggle.classList.toggle('open', isOpen);
+});
+
+// 페이지 상태 감지
+(async () => {
+  try {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+    const url = tab?.url || '';
+
+    if (url.includes('millie.co.kr') && url.includes('highlights')) {
+      pageBadge.className = 'page-badge on-millie';
+      pageBadgeText.textContent = '하이라이트 페이지 감지됨';
+    } else if (url.includes('millie.co.kr')) {
+      pageBadge.className = 'page-badge on-millie';
+      pageBadgeText.textContent = '밀리의 서재 — 하이라이트 탭으로 이동하세요';
+      // 밀리 페이지이지만 하이라이트가 아닌 경우 가이드를 자동 펼침
+      guideSteps.classList.add('show');
+      guideToggle.classList.add('open');
+    } else {
+      pageBadge.className = 'page-badge off-millie';
+      pageBadgeText.textContent = '밀리의 서재 페이지가 아닙니다';
+      extractBtn.disabled = true;
+      // 밀리 페이지가 아닌 경우 가이드를 자동 펼침
+      guideSteps.classList.add('show');
+      guideToggle.classList.add('open');
+    }
+  } catch {
+    pageBadge.className = 'page-badge off-millie';
+    pageBadgeText.textContent = '페이지를 확인할 수 없습니다';
+  }
+})();
+
+// 추출 버튼
 extractBtn.addEventListener('click', async () => {
   extractBtn.disabled = true;
   extractBtn.textContent = '추출 중...';
@@ -34,6 +74,10 @@ extractBtn.addEventListener('click', async () => {
     showStatus('success', `✓ ${result.count}개의 하이라이트를 클립보드에 복사했습니다!`);
     previewEl.textContent = result.text;
     previewEl.style.display = 'block';
+
+    // 가이드가 열려있으면 닫기
+    guideSteps.classList.remove('show');
+    guideToggle.classList.remove('open');
 
   } catch (err) {
     console.error(err);

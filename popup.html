@@ -31,6 +31,115 @@
     .content {
       padding: 16px 20px;
     }
+
+    /* Guide section */
+    .guide {
+      margin-bottom: 14px;
+    }
+    .guide-toggle {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      color: #888;
+      padding: 0;
+      margin-bottom: 8px;
+    }
+    .guide-toggle:hover {
+      color: #555;
+    }
+    .guide-toggle .arrow {
+      font-size: 10px;
+      transition: transform 0.2s;
+      display: inline-block;
+    }
+    .guide-toggle.open .arrow {
+      transform: rotate(90deg);
+    }
+    .guide-steps {
+      display: none;
+      background: white;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 12px 14px;
+    }
+    .guide-steps.show {
+      display: block;
+    }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 6px 0;
+    }
+    .step + .step {
+      border-top: 1px solid #f5f5f5;
+    }
+    .step-num {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #4a90d9;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .step-text {
+      font-size: 12px;
+      line-height: 1.5;
+      color: #555;
+    }
+    .step-text strong {
+      color: #333;
+    }
+    .step-text code {
+      background: #f0f0f0;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-size: 11px;
+      color: #c62828;
+      word-break: break-all;
+    }
+
+    /* Page status badge */
+    .page-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+    .page-badge.on-millie {
+      background: #e8f5e9;
+      color: #2e7d32;
+    }
+    .page-badge.off-millie {
+      background: #fff3e0;
+      color: #e65100;
+    }
+    .page-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .page-badge.on-millie .dot {
+      background: #4caf50;
+    }
+    .page-badge.off-millie .dot {
+      background: #ff9800;
+    }
+
     .btn {
       width: 100%;
       padding: 12px;
@@ -88,17 +197,60 @@
       white-space: pre-wrap;
       display: none;
     }
+    .footer {
+      padding: 10px 20px;
+      border-top: 1px solid #eee;
+      text-align: center;
+    }
+    .footer a {
+      font-size: 11px;
+      color: #aaa;
+      text-decoration: none;
+    }
+    .footer a:hover {
+      color: #666;
+    }
   </style>
 </head>
 <body>
   <div class="header">
     <h1>📚 밀리의 서재 하이라이트</h1>
-    <p>하이라이트 페이지에서 실행해주세요</p>
+    <p>하이라이트를 한 번에 추출하여 클립보드에 복사합니다</p>
   </div>
   <div class="content">
+    <!-- 현재 페이지 상태 -->
+    <div id="pageBadge" class="page-badge off-millie">
+      <span class="dot"></span>
+      <span id="pageBadgeText">페이지 확인 중...</span>
+    </div>
+
+    <!-- 사용 가이드 (접이식) -->
+    <div class="guide">
+      <button id="guideToggle" class="guide-toggle">
+        <span class="arrow">▶</span> 사용 방법
+      </button>
+      <div id="guideSteps" class="guide-steps">
+        <div class="step">
+          <span class="step-num">1</span>
+          <span class="step-text"><strong>밀리의 서재</strong>에 로그인합니다.</span>
+        </div>
+        <div class="step">
+          <span class="step-num">2</span>
+          <span class="step-text"><strong>서재 > 책 선택 > 하이라이트</strong> 탭으로 이동합니다.<br><code>/library/.../highlights/...</code></span>
+        </div>
+        <div class="step">
+          <span class="step-num">3</span>
+          <span class="step-text">아래 <strong>하이라이트 추출 & 복사</strong> 버튼을 클릭하면 끝!</span>
+        </div>
+      </div>
+    </div>
+
     <button id="extractBtn" class="btn btn-primary">하이라이트 추출 & 복사</button>
     <div id="status" class="status"></div>
     <div id="preview" class="preview"></div>
+  </div>
+  <div class="footer">
+    <a href="https://github.com/baessu/ebookclipper" target="_blank">GitHub</a>
   </div>
   <script src="popup.js"></script>
 </body>
