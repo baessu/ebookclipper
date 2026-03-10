@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(zip -r ebookclipper.zip manifest.json content.js popup.html popup.js icons/)",
+      "Bash(python3 store-assets/generate-screenshots.py)",
+      "Bash(git init:*)",
+      "Bash(gh auth:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}

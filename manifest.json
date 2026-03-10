@@ -1,0 +1,25 @@
+{
+  "manifest_version": 3,
+  "name": "밀리의 서재 하이라이트 추출기",
+  "description": "밀리의 서재에서 하이라이트 문장을 자동으로 추출하여 클립보드에 복사합니다.",
+  "version": "1.0.0",
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "permissions": ["activeTab", "scripting"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://www.millie.co.kr/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
